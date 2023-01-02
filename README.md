@@ -1,4 +1,4 @@
-# RepezenDogs
+# RuckGame Contracts
 
 Goerli
 
