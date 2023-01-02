@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const ruckGameNFTAddress = "0x6Bc07B56e1970F30FA701a936A8D08DF81dD15C4"
+  const ruckGameNFTAddress = "0x809Ca6cb69a69BdA7A74Aa0994A39C8c1cdC0863"
 
   const instance = await ethers.getContractFactory("RuckGameController")
   const contract = await instance.deploy(ruckGameNFTAddress)
