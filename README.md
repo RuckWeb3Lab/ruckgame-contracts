@@ -1,7 +1,10 @@
 # RepezenDogs
 
-Goerli: <https://goerli.etherscan.io/address/0x7734048130cb6306f452645e8a3C057C7957774C>
+Goerli
 
-##
+- RuckGame: 作成中
+- RuckGameNFT: 作成中
+
+## イラスト作成ツール
 
 ドット絵コンバーター <https://app.monopro.org/pixel/>
