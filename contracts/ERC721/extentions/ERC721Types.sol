@@ -15,10 +15,12 @@ contract ERC721Types is Ownable {
         string secondTypeName;
     }
 
-    mapping(uint256 => string) private _typeList;
-
     // 設定値を変えると、二つ目の属性も変化する
     string private _secondTypeWord;
+
+    uint256 public numberOfType;
+
+    mapping(uint256 => string) private _typeList;
 
     // TODO: ERC721Aも対象にする
     // https://github.com/RuckWeb3Lab/ruckgame-contracts/issues/3
@@ -47,10 +49,11 @@ contract ERC721Types is Ownable {
         _typeList[14] = "ghost";
         _typeList[15] = "dragon";
 
+        numberOfType = 15;
     }
 
     /// @dev NFTに割り当てられた属性を返す。
-    function getType(
+    function getTypes(
         address contractAddress,
         uint256 tokenId
     )
@@ -84,14 +87,14 @@ contract ERC721Types is Ownable {
         string memory secondTypeWord
     )
         private
-        pure
+        view
         returns(uint256)
     {
         // TODO: 全属性情報が割り当てられる計算式に修正
         // https://github.com/RuckWeb3Lab/ruckgame-contracts/issues/2
         uint256 number = uint256(keccak256(abi.encodePacked(contractAddress, tokenId, secondTypeWord)));
 
-        while (number > 15) {
+        while (number > numberOfType) {
             number = number / 2;
         }
 
