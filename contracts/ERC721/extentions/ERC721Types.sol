@@ -8,6 +8,7 @@ import "hardhat/console.sol";
 
 /// @dev ERC721に属性を持たせることができます。
 ///      全15種類の属性が存在し、1つのNFTに対して2種類の属性が割り当てられます。
+///      2種類の属性の内、一つ目の属性は固定型の属性、二つ目の属性は変動型の属性です。
 contract ERC721Types is Ownable {
     struct Type {
         uint256 firstType;
@@ -20,6 +21,8 @@ contract ERC721Types is Ownable {
 
     string private _secondTypeWord;
 
+    // TODO: ERC721Aも対象にする
+    // https://github.com/RuckWeb3Lab/ruckgame-contracts/issues/3
     modifier onlyERC721(address contractAddress) {
         IERC721 token = IERC721(contractAddress);
         require(token.supportsInterface(type(IERC721).interfaceId), "includeERC721: Not compliant with IERC721.");
@@ -57,6 +60,8 @@ contract ERC721Types is Ownable {
         onlyERC721(contractAddress)
         returns(Type memory)
     {
+        // TODO: 発行済みのtokenIdかをチェックする処理を追加
+        // https://github.com/RuckWeb3Lab/ruckgame-contracts/issues/1
         Type memory nftType;
 
         uint256 firstType = _getType(contractAddress, tokenId, "");
@@ -83,6 +88,8 @@ contract ERC721Types is Ownable {
         pure
         returns(uint256)
     {
+        // TODO: 全属性情報が割り当てられる計算式に修正
+        // https://github.com/RuckWeb3Lab/ruckgame-contracts/issues/2
         uint256 number = uint256(keccak256(abi.encodePacked(contractAddress, tokenId, secondTypeWord)));
 
         while (number > 15) {
