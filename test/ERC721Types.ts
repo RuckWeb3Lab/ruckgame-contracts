@@ -30,6 +30,7 @@ describe('ERC721Types', () => {
       const { ruckGameNFT, erc721Types } = await loadFixture(contractFixture)
 
       const nftTypes = await erc721Types.getType(ruckGameNFT.address, 1);
+      console.log(nftTypes);
 
       expect(nftTypes['firstType']).to.equal(11);
       expect(nftTypes['firstTypeName']).to.equal('psycho');

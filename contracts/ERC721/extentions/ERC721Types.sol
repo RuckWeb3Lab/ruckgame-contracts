@@ -3,8 +3,6 @@ pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "hardhat/console.sol";
 
 /// @dev ERC721に属性を持たせることができます。
 ///      全15種類の属性が存在し、1つのNFTに対して2種類の属性が割り当てられます。
@@ -19,6 +17,7 @@ contract ERC721Types is Ownable {
 
     mapping(uint256 => string) private _typeList;
 
+    // 設定値を変えると、二つ目の属性も変化する
     string private _secondTypeWord;
 
     // TODO: ERC721Aも対象にする
@@ -30,7 +29,7 @@ contract ERC721Types is Ownable {
     }
 
     constructor() {
-        _secondTypeWord = "secondTypeWord";
+        _secondTypeWord = "SECOND_TYPE_WORD";
 
         _typeList[1] = "nomal";
         _typeList[2] = "fire";
