@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
 
+/// @dev ERC721に属性を持たせることができます。
+///      全15種類の属性が存在し、1つのNFTに対して2種類の属性が割り当てられます。
 contract ERC721Types is Ownable {
     struct Type {
         uint256 firstType;
@@ -45,6 +47,7 @@ contract ERC721Types is Ownable {
 
     }
 
+    /// @dev NFTに割り当てられた属性を返す。
     function getType(
         address contractAddress,
         uint256 tokenId
