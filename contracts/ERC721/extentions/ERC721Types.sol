@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
 
-contract ERC721Types {
-    struct Token {
-        address contractAddress;
-        uint256 tokenId;
+contract ERC721Types is Ownable {
+    struct Type {
+        uint256 firstType;
+        string firstTypeName;
+        uint256 secondType;
+        string secondTypeName;
     }
 
-    mapping (address => uint8) private _includedERC721;
+    mapping(uint256 => string) private _typeList;
+
+    string private _secondTypeWord;
 
     modifier onlyERC721(address contractAddress) {
         IERC721 token = IERC721(contractAddress);
@@ -19,47 +24,68 @@ contract ERC721Types {
         _;
     }
 
-    constructor() {}
+    constructor() {
+        _secondTypeWord = "secondTypeWord";
 
-    function isIncludedERC721(address contractAddress) external view returns (uint8) {
-        return _includedERC721[contractAddress];
+        _typeList[1] = "nomal";
+        _typeList[2] = "fire";
+        _typeList[3] = "water";
+        _typeList[4] = "electric";
+        _typeList[5] = "grass";
+        _typeList[6] = "ice";
+        _typeList[7] = "fighting";
+        _typeList[8] = "poison";
+        _typeList[9] = "ground";
+        _typeList[10] = "flying";
+        _typeList[11] = "psycho";
+        _typeList[12] = "bug";
+        _typeList[13] = "rock";
+        _typeList[14] = "ghost";
+        _typeList[15] = "dragon";
+
     }
 
-    function includeERC721(
-        address contractAddress
-    )
-        external
-        onlyERC721(contractAddress)
-    {
-        _includedERC721[contractAddress] = 1;
-    }
-
-    function excludeERC721(address contractAddress) external {
-        _includedERC721[contractAddress] = 0;
-    }
-
-    function getType(address contractAddress, uint256 tokenId) external pure returns(uint256) {
-        bytes32 nftId = keccak256(abi.encodePacked(contractAddress, tokenId));
-
-        uint256 i;
-        uint256 typeId = nftId.length + tokenId;
-        while (typeId >= 15) {
-            typeId = typeId / 2;
-            i++;
-        }
-
-        return typeId;
-    }
-
-    function _getNftId(
+    function getType(
         address contractAddress,
         uint256 tokenId
     )
-        private
+        external
         view
         onlyERC721(contractAddress)
-        returns(bytes32)
+        returns(Type memory)
     {
-        return keccak256(abi.encodePacked(contractAddress, tokenId));
+        Type memory nftType;
+
+        uint256 firstType = _getType(contractAddress, tokenId, "");
+        nftType.firstType = firstType;
+        nftType.firstTypeName = _typeList[firstType];
+
+        uint256 secondType = _getType(contractAddress, tokenId, _secondTypeWord);
+        nftType.secondType = secondType;
+        nftType.secondTypeName = _typeList[secondType];
+
+        return nftType;
+    }
+
+    function setSecondTypeWord(string memory newWord) external onlyOwner {
+        _secondTypeWord = newWord;
+    }
+
+    function _getType(
+        address contractAddress,
+        uint256 tokenId,
+        string memory secondTypeWord
+    )
+        private
+        pure
+        returns(uint256)
+    {
+        uint256 number = uint256(keccak256(abi.encodePacked(contractAddress, tokenId, secondTypeWord)));
+
+        while (number > 15) {
+            number = number / 2;
+        }
+
+        return number;
     }
 }

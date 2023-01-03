@@ -1,4 +1,5 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+import { expect } from "chai";
 import { ethers } from "hardhat";
 
 describe('ERC721Types', () => {
@@ -15,8 +16,6 @@ describe('ERC721Types', () => {
     const ERC721Types = await ethers.getContractFactory("ERC721Types");
     const erc721Types = await ERC721Types.deploy();
 
-    await erc721Types.includeERC721(ruckGameNFT.address);
-
     return {
       owner,
       account1,
@@ -26,14 +25,16 @@ describe('ERC721Types', () => {
     }
   }
 
-  describe("baseURI", function () {
-    it("baseURIが取得できること。", async function () {
+  describe("getType", function () {
+    it("タイプが取得できること", async function () {
       const { ruckGameNFT, erc721Types } = await loadFixture(contractFixture)
 
-      const test = await erc721Types.getType(ruckGameNFT.address, 221);
-      console.log(Number(test))
+      const nftTypes = await erc721Types.getType(ruckGameNFT.address, 1);
 
-      // expect(await contracts.baseURI()).to.equal(NFT_BASE_URI);
+      expect(nftTypes['firstType']).to.equal(11);
+      expect(nftTypes['firstTypeName']).to.equal('psycho');
+      expect(nftTypes['secondType']).to.equal(15);
+      expect(nftTypes['secondTypeName']).to.equal('dragon');
     });
   });
 })
